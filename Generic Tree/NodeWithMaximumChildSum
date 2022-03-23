@@ -1,0 +1,75 @@
+/************************************************************
+
+    Following is the structure for the TreeNode class
+
+    template <typename T>
+    class TreeNode {
+     public:
+        T data;
+        vector<TreeNode<T>*> children;
+
+        TreeNode(T data) {
+            this->data = data;
+        }
+
+        ~TreeNode() {
+            for (int i = 0; i < children.size(); i++) {
+                delete children[i];
+            }
+        }
+    };
+
+************************************************************/
+// int findSumNode(TreeNode<int>* root){
+// 	int ans = root->data;
+//     for(int i=0;i<root->children.size();i++){
+// 		ans += root->children[i]->data;
+// 	}
+//     return ans;
+// }
+// TreeNode<int>* maxSumNode(TreeNode<int>* root) {
+//     // Write your code here
+//     TreeNode<int>*resultNode=root;
+//     int resultSum = findSumNode(root);
+    
+//     for(int i=0;i<root->children.size();i++){
+//         TreeNode<int>*smallNode = maxSumNode(root->children[i]);
+//         int smallOutput = findSumNode(smallNode);
+// 		if(resultSum<smallOutput){
+// 			resultNode=smallNode;
+//             resultSum=smallOutput;
+// 		}
+//     }
+//     return resultNode;
+// }
+
+//Better approach
+class MaxNodePair{
+    public:
+    int sum;
+	TreeNode<int>* Node;
+};
+int findSumNode(TreeNode<int>* root){
+	int ans = root->data;
+    for(int i=0;i<root->children.size();i++){
+		ans += root->children[i]->data;
+	}
+    return ans;
+}
+MaxNodePair maxSumNodeHelper(TreeNode<int>* root){
+	MaxNodePair ans;
+    ans.Node = root;
+    ans.sum = findSumNode(root);
+    for(int i=0;i<root->children.size();i++){
+		MaxNodePair smallAns = maxSumNodeHelper(root->children[i]);
+    	if(smallAns.sum>ans.sum){
+			ans.sum = smallAns.sum;
+            ans.Node = smallAns.Node;
+		}
+    }
+    return ans;
+}
+TreeNode<int>* maxSumNode(TreeNode<int>* root){
+    MaxNodePair p1 = maxSumNodeHelper(root);
+    return p1.Node;
+}

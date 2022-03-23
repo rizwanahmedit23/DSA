@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "climits": "cpp"
+        "climits": "cpp",
+        "array": "cpp",
+        "string": "cpp"
     }
 }
